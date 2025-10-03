@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>5-oy-5-dars</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/output.css" />
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body class="bg-gray-50">
-    <!-- Header -->
     <div class="text-center py-8">
       <h1 class="font-bold text-3xl">Hayotimga aloqasi yo‘q 🎧</h1>
       <p class="pt-5 font-mono text-xl text-gray-700">
@@ -27,8 +27,6 @@
         ></iframe>
       </div>
     </div>
-
-    <!-- FORM -->
     <form
       id="form"
       class="flex flex-wrap items-center justify-center gap-3 mb-20"
@@ -53,27 +51,19 @@
         Qo‘shish
       </button>
     </form>
-
-    <!-- Loader -->
     <div class="flex items-center justify-center">
       <h3 id="loader" class="hidden text-3xl font-bold text-gray-700">
         Loading...
       </h3>
     </div>
-
-    <!-- Cards container -->
     <ul
       id="container"
       class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-5"
     ></ul>
-
-    <!-- Toasts -->
     <ul
       id="toastContainer"
       class="fixed top-5 right-5 flex flex-col gap-2 z-50"
     ></ul>
-
-    <!-- Card template -->
     <template id="cardTemplate">
       <li
         class="border border-gray-300 rounded-2xl p-5 shadow-md flex flex-col bg-white"
@@ -90,8 +80,6 @@
         </button>
       </li>
     </template>
-
-    <!-- Error text -->
     <div class="flex items-center justify-center mt-10">
       <h2
         id="errorText"
