@@ -1,3 +1,4 @@
+import { toast } from "./toast.js";
 import {
   elContainer,
   elErrorText,
@@ -5,120 +6,139 @@ import {
   elLoader,
   elTemplateCard,
 } from "./html-elements.js";
-import { toast } from "./toast.js";
 
+const API_URL = "https://json-api.uz/api/project/fn44";
+
+// 🔹 Dastlabki yuklash
+init();
+
+function init() {
+  elLoader.classList.remove("hidden");
+  elErrorText.innerText = "";
+
+  fetch(`${API_URL}/cars`)
+    .then((res) => res.json())
+    .then((data) => ui(data.data))
+    .catch(() => (elErrorText.innerText = "Ma'lumotlarni olishda xatolik!"))
+    .finally(() => elLoader.classList.add("hidden"));
+}
+
+// 🔹 UI chizish
 function ui(cars) {
   elContainer.innerHTML = "";
 
-  cars.forEach((element) => {
+  if (!cars.length) {
+    elContainer.innerHTML =
+      "<h2 class='col-span-full text-center text-gray-500 text-xl font-semibold'>Mashinalar mavjud emas 😔</h2>";
+    return;
+  }
+
+  cars.forEach((car) => {
     const clone = elTemplateCard.cloneNode(true).content;
-    const elTitle = clone.querySelector("h2");
-    const elDescription = clone.querySelector("p");
-    const elDeleteButton = clone.querySelector(".js-delete");
+    const title = clone.querySelector("h2");
+    const desc = clone.querySelector("p");
+    const btnDelete = clone.querySelector(".js-delete");
+    const btnEdit = clone.querySelector(".js-edit");
 
-    elTitle.innerText = element.name;
+    title.textContent = car.name;
+    desc.innerHTML = `
+      <b>Trim:</b> ${car.trim || "-"}<br>
+      <b>Avlod:</b> ${car.generation || "-"}<br>
+      <b>Yili:</b> ${car.year || "-"}<br>
+      <b>Rangi:</b> ${car.colorName || "-"} (${car.color || "-"})<br>
+      <b>Kategoriya:</b> ${car.category || "-"}<br>
+      <b>Izoh:</b> ${car.description || "-"}
+    `;
 
-    elDescription.innerText = `
-Trim: ${element.trim}
-Avlod: ${element.generation}
-Yili: ${element.year}
-Rangi: ${element.colorName} (${element.color})
-Kategoriya: ${element.category}
-Eshik soni: ${element.doorCount}
-O‘rindiqlar soni: ${element.seatCount}
-Maksimal tezlik: ${element.maxSpeed}
-Tezlanish: ${element.acceleration}
-Dvigatel: ${element.engine}
-Ot kuchi: ${element.horsepower}
-Yoqilg‘i turi: ${element.fuelType}
-Yoqilg‘i sarfi:
-   - Shahar: ${element.fuelConsumption?.city || "-"}
-   - Trassa: ${element.fuelConsumption?.highway || "-"}
-   - O‘rtacha: ${element.fuelConsumption?.combined || "-"}
-Mamlakat: ${element.country}
-Izoh: ${element.description}
-ID: ${element.id}
-`;
+    // 🔸 O‘chirish
+    btnDelete.addEventListener("click", () => {
+      if (confirm("Rostdan o‘chirmoqchimisiz?")) {
+        deleteCar(car.id);
+      }
+    });
 
-    elDeleteButton.id = element.id;
+    // 🔸 Tahrirlash
+    btnEdit.addEventListener("click", () => openEditModal(car));
 
     elContainer.appendChild(clone);
   });
 }
 
-function init() {
-  elLoader.classList.remove("hidden");
-  fetch("https://json-api.uz/api/project/fn44/cars")
-    .then((res) => {
-      return res.json();
-    })
-    .then((res) => {
-      ui(res.data);
-    })
-    .catch(() => {
-      elErrorText.textContent = "Xatolik chiqdi!";
-    })
-    .finally(() => {
-      elLoader.classList.add("hidden");
-    });
-}
-init();
-
-function deleteCar(id) {
-  fetch(`https://json-api.uz/api/project/fn44/cars/${id}`, {
-    method: "DELETE",
-  })
-    .then((res) => {
-      return res.text();
-    })
-    .then((res) => {
-      elContainer.innerHTML = "";
-      toast(res);
-      init();
-    })
-    .catch((err) => {});
-  // .finally(() => {
-  //   elLoader.classList.add("hidden");
-  // });
-}
-
-function addCar(car) {
-  fetch("https://json-api.uz/api/project/fn44/cars", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(car),
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      elContainer.innerHTML = "";
-      toast("Yangi mashina qo'shildi!");
-      init();
-    })
-    .catch((err) => {
-      toast("Xatolik yuz berdi!");
-      console.error(err);
-    });
-}
-
-// CRUD
-elContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("js-delete")) {
-    if (confirm("Ochirsangiz qaytib topa olmaysiz")) {
-      e.target.innerText = "Loading . . .";
-      deleteCar(e.target.id);
-    }
-  }
-});
-
+// 🔹 Yangi mashina qo‘shish
 elForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const result = {};
-  const formData = new FormData(elForm);
-  formData.forEach((value, key) => {
-    result[key] = value;
-  });
 
-  addCar(result);
+  const formData = new FormData(elForm);
+  const newCar = {
+    name: formData.get("name"),
+    description: formData.get("description"),
+  };
+
+  fetch(`${API_URL}/cars`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newCar),
+  })
+    .then((res) => res.json())
+    .then(() => {
+      toast("Mashina qo‘shildi!");
+      elForm.reset();
+      init();
+    })
+    .catch(() => toast("Qo‘shishda xatolik!"));
+});
+
+// 🔹 O‘chirish
+function deleteCar(id) {
+  fetch(`${API_URL}/cars/${id}`, { method: "DELETE" })
+    .then(() => {
+      toast("Mashina o‘chirildi!");
+      init();
+    })
+    .catch(() => toast("O‘chirishda xatolik!"));
+}
+
+// 🔹 Tahrirlash modal
+const modalBg = document.getElementById("modalBg");
+const closeModal = document.getElementById("closeModal");
+const saveBtn = modalBg.querySelector("button.bg-red-600");
+const inputTitle = modalBg.querySelector("input");
+const inputDesc = modalBg.querySelector("textarea");
+
+let editingId = null;
+
+function openEditModal(car) {
+  editingId = car.id;
+  inputTitle.value = car.name;
+  inputDesc.value = car.description || "";
+  modalBg.classList.remove("hidden");
+  modalBg.classList.add("flex");
+}
+
+closeModal.addEventListener("click", () => {
+  modalBg.classList.add("hidden");
+  modalBg.classList.remove("flex");
+});
+
+saveBtn.addEventListener("click", () => {
+  if (!editingId) return;
+
+  const updatedCar = {
+    name: inputTitle.value.trim(),
+    description: inputDesc.value.trim(),
+  };
+
+  fetch(`${API_URL}/cars/${editingId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedCar),
+  })
+    .then((res) => res.json())
+    .then(() => {
+      toast("Tahrirlandi!");
+      modalBg.classList.add("hidden");
+      modalBg.classList.remove("flex");
+      init();
+    })
+    .catch(() => toast("Tahrirlashda xatolik!"));
 });
