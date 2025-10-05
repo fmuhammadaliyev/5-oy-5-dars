@@ -5,7 +5,7 @@ function toast(text) {
   const p = document.createElement("p");
   const button = document.createElement("button");
 
-  p.innerText = text = "Ochirish yakunlandi 📈";
+  p.innerText = text = "O'chirish yakunlandi✅";
   button.innerText = "Yopish";
 
   li.classList.add(
