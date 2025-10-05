@@ -48,7 +48,7 @@ ID: ${element.id}
 
 function init() {
   elLoader.classList.remove("hidden");
-  fetch("https://json-api.uz/api/project/fn43/cars")
+  fetch("https://json-api.uz/api/project/fn44/cars")
     .then((res) => {
       return res.json();
     })
@@ -65,7 +65,7 @@ function init() {
 init();
 
 function deleteCar(id) {
-  fetch(`https://json-api.uz/api/project/fn43/cars/${id}`, {
+  fetch(`https://json-api.uz/api/project/fn44/cars/${id}`, {
     method: "DELETE",
   })
     .then((res) => {
@@ -83,7 +83,7 @@ function deleteCar(id) {
 }
 
 function addCar(car) {
-  fetch("https://json-api.uz/api/project/fn43/cars", {
+  fetch("https://json-api.uz/api/project/fn44/cars", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
