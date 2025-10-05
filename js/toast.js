@@ -5,7 +5,7 @@ function toast(text) {
   const p = document.createElement("p");
   const button = document.createElement("button");
 
-  p.innerText = text = "Yopilsinmi  ?";
+  p.innerText = text = "Ochirish yakunlandi 📈";
   button.innerText = "Yopish";
 
   li.classList.add(
@@ -26,7 +26,6 @@ function toast(text) {
     "bg-black",
     "text-white",
     "rounded",
-
     "transition"
   );
 
