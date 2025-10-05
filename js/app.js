@@ -9,7 +9,6 @@ import {
 
 const API_URL = "https://json-api.uz/api/project/fn44";
 
-// 🔹 Dastlabki yuklash
 init();
 
 function init() {
@@ -23,7 +22,6 @@ function init() {
     .finally(() => elLoader.classList.add("hidden"));
 }
 
-// 🔹 UI chizish
 function ui(cars) {
   elContainer.innerHTML = "";
 
@@ -50,21 +48,18 @@ function ui(cars) {
       <b>Izoh:</b> ${car.description || "-"}
     `;
 
-    // 🔸 O‘chirish
     btnDelete.addEventListener("click", () => {
       if (confirm("Rostdan o‘chirmoqchimisiz?")) {
         deleteCar(car.id);
       }
     });
 
-    // 🔸 Tahrirlash
     btnEdit.addEventListener("click", () => openEditModal(car));
 
     elContainer.appendChild(clone);
   });
 }
 
-// 🔹 Yangi mashina qo‘shish
 elForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -88,7 +83,6 @@ elForm.addEventListener("submit", (e) => {
     .catch(() => toast("Qo‘shishda xatolik!"));
 });
 
-// 🔹 O‘chirish
 function deleteCar(id) {
   fetch(`${API_URL}/cars/${id}`, { method: "DELETE" })
     .then(() => {
@@ -98,7 +92,6 @@ function deleteCar(id) {
     .catch(() => toast("O‘chirishda xatolik!"));
 }
 
-// 🔹 Tahrirlash modal
 const modalBg = document.getElementById("modalBg");
 const closeModal = document.getElementById("closeModal");
 const saveBtn = modalBg.querySelector("button.bg-red-600");
