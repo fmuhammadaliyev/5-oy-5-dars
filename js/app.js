@@ -135,3 +135,22 @@ saveBtn.addEventListener("click", () => {
     })
     .catch(() => toast("Tahrirlashda xatolik!"));
 });
+
+// dark
+const elBtn = document.getElementById("btn");
+
+if (localStorage.getItem("mode") === "darkk") {
+  document.body.classList.add("darkk");
+} else {
+  document.body.classList.remove("darkk");
+}
+
+elBtn.addEventListener("click", () => {
+  if (document.body.classList.contains("darkk")) {
+    document.body.classList.remove("darkk");
+    localStorage.setItem("mode", "light");
+  } else {
+    document.body.classList.add("darkk");
+    localStorage.setItem("mode", "darkk");
+  }
+});

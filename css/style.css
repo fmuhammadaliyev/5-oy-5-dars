@@ -1,0 +1,21 @@
+.darkk {
+  background-color: black;
+  color: white;
+}
+
+.darkk button,
+.darkk .js-delete,
+.darkk .js-edit,
+.darkk #form button {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+.darkk button:hover,
+.darkk .js-delete:hover,
+.darkk .js-edit:hover,
+.darkk #form button:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
