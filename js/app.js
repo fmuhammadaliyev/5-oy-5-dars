@@ -87,7 +87,10 @@ function deleteCar(id) {
   fetch(`${API_URL}/cars/${id}`, { method: "DELETE" })
     .then(() => {
       toast("Mashina o‘chirildi!");
-      init();
+
+      setTimeout(() => {
+        window.location.href = "./pages/login.html";
+      });
     })
     .catch(() => toast("O‘chirishda xatolik!"));
 }

@@ -1,11 +1,9 @@
-const elToastContainer = document.getElementById("toastContainer");
-
-export function toast(text) {
-  const li = document.createElement("li");
-  li.className =
-    "bg-gray-900 text-white px-4 py-2 rounded-lg shadow-md transition-opacity animate-fade-in";
-  li.textContent = text;
-
-  elToastContainer.appendChild(li);
-  setTimeout(() => li.remove(), 3000);
+function toast(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  div.className =
+    "fixed bottom-5 right-5 bg-black text-white py-2 px-4 rounded-lg shadow-lg";
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 3000);
 }
+export { toast };

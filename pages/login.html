@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/output.css" />
+  </head>
+  <body
+    class="bg-gray-100 flex flex-col items-center justify-center min-h-screen gap-5"
+  >
+    <h1 class="text-3xl font-bold text-gray-700">Tizimga kirish</h1>
+
+    <form id="loginForm" class="flex flex-col gap-4 items-center">
+      <input
+        name="username"
+        type="text"
+        placeholder="Login"
+        class="w-64 p-3 border rounded-xl"
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="Parol"
+        class="w-64 p-3 border rounded-xl"
+      />
+      <button
+        class="w-64 p-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600"
+      >
+        Davom etish
+      </button>
+    </form>
+
+    <p id="error" class="text-red-500"></p>
+    <p id="loader" class="hidden text-gray-600">Kirish tekshirilmoqda...</p>
+
+    <script src="../js/login.js"></script>
+  </body>
+</html>
